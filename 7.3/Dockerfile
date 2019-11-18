@@ -8,7 +8,11 @@ RUN apk add --no-cache --virtual .build-deps \
     libtool \
     libxml2-dev \
     postgresql-dev \
-    sqlite-dev
+    sqlite-dev \
+    libjpeg-turbo \
+    libjpeg-turbo-dev \ 
+    libpng \
+    libpng-dev
 
 # Install production dependencies
 RUN apk add --no-cache \
@@ -19,7 +23,12 @@ RUN apk add --no-cache \
     git \
     imagemagick \
     libc-dev \
+    freetype \ 
+    freetype-dev \
+    libpng \
     libpng-dev \
+    libjpeg-turbo \
+    libjpeg-turbo-dev \
     make \
     mysql-client \
     nodejs \
@@ -40,6 +49,11 @@ RUN pecl install \
 RUN docker-php-ext-enable \
     imagick \
     xdebug
+RUN docker-php-ext-configure gd \
+        --with-freetype-dir=/usr/lib/ \
+        --with-png-dir=/usr/lib/ \
+        --with-jpeg-dir=/usr/lib/ \
+        --with-gd
 RUN docker-php-ext-configure zip --with-libzip
 RUN docker-php-ext-install \
     curl \
